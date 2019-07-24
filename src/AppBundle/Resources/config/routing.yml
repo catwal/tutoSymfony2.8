@@ -2,3 +2,7 @@
 list_articles:
     path:     /listArticles
     defaults: { _controller: AppBundle:article:listArticles }
+
+new:
+    path:     /form
+    defaults: { _controller: AppBundle:form:new }

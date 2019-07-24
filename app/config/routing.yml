@@ -2,6 +2,11 @@ app:
     resource: '@AppBundle/Controller/'
     type: annotation
 
+
 template:
     path: /displayTwig
     defaults: {_controller: AppBundle:template:displayTwig}
+
+form:
+    path: /form
+    defaults: {_controller: AppBundle:form:new}
