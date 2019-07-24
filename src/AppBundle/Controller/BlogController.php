@@ -32,6 +32,7 @@ class BlogController extends Controller
         ));
     }
 
+//  has to commented to enable all url suffix
     /**
      * Matches /blog/*
      *
@@ -39,9 +40,19 @@ class BlogController extends Controller
      */
     public function showAction($slug)
     {
+        /**
+         * matches "/blog/my-blog-post
+         */
+//        $url = $this->generateUrl(
+//            'blog_show',
+//            array('slug' => 'my-blog-post')
+//        );
+
         return $this->render('AppBundle:Blog:list.html.twig', array(
         ));
     }
+
+
 
 
     /**
