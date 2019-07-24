@@ -4,4 +4,26 @@
 
 {% block body %}
 <h1>Welcome to the Blog:list page</h1>
+    <a href="{{ url('template') }}">Template twig url</a>
+    <a href="{{ path('template') }}">Template twig path</a>
+    {# starting from web #}
+    <img src="{{ asset('public/asset/logo/logo_php.jpg') }}" alt="logo_php">
+
+{#
+ {% for article in articles %}
+        <a href="{{ path('article_show', {'slug': article.slug}) }}">
+            {{ article.title }}
+    {% endfor %}
+
+
+   have to extends variable articles from articleControlleur into BlogControlleur before
+   <h1>Recent Articles<h1>
+    {% for article in articles %}
+        <a href="{{ path('article_show', {'slug': article.slug}) }}">
+            {{ article.title }}
+        {{ include('article/list_articles.html.twig', { 'article': article }) }}
+    {% endfor %}
+
+#}
+
 {% endblock %}

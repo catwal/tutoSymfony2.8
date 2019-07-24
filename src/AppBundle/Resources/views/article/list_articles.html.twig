@@ -1,0 +1,15 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:article:listArticles{% endblock %}
+
+{% block body %}
+<h1>Welcome to the article:listArticles page</h1>
+
+    <h2>{{ article.title }}</h2>
+    <h3 class="byline">by {{ article.authorName }}</h3>
+
+    <p>
+        {{ article.body }}
+    </p>
+
+{% endblock %}

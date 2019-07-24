@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class BlogController extends Controller
 {
+
     /**
      * Matches /blog exactly
      *
@@ -51,9 +52,6 @@ class BlogController extends Controller
         return $this->render('AppBundle:Blog:list.html.twig', array(
         ));
     }
-
-
-
 
     /**
      * @Route (

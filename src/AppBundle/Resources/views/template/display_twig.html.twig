@@ -1,0 +1,28 @@
+{# extends is always the first called #}
+{% extends "::base.html.twig" %}
+
+{# default attribute title in twig #}
+{% block title %}AppBundle:template:displayTwig{% endblock %}
+
+{# default attribute body in twig #}
+{% block body %}
+<h1>Welcome to the template:displayTwig page</h1>
+    <div id="sidebar">
+
+        {# default attribute sidebar in twig #}
+        {% block sidebar %}
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/blog">Blog</a></li>
+            </ul>
+        {% endblock %}
+    </div>
+    {% for entry in blog_entries %}
+        <p>{{ entry }}</p>
+
+    {% endfor %}
+
+    {# call a parent twig and display the code {{ parent() }} #}
+
+
+{% endblock %}

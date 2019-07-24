@@ -1,0 +1,4 @@
+
+list_articles:
+    path:     /listArticles
+    defaults: { _controller: AppBundle:article:listArticles }
