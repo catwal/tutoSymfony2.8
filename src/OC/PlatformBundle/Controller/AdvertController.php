@@ -27,9 +27,24 @@ class AdvertController extends Controller
      *
      * @return Response
      */
-    public function viewAction($id)
+//    public function viewAction($id)
+//    {
+//        return new Response("print id from url /platform/advert/: " . $id);
+//    }
+
+
+    public function viewAction()
     {
-        return new Response("print id from url /platform/advert/: " . $id);
+        $url = $this->get('router')->generate(
+            'oc_platform_view',
+            ['id' => 5],
+//            constraint to absolute url
+            true
+        );
+        // same method shorter
+        $url = $this->generateUrl('oc_platform_view', array('id'=>5));
+
+        return new Response("url of this template ended by /platform/advert/5: " . $url);
     }
 
     public function viewSlugAction($slug, $year, $format)
