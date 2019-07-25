@@ -10,6 +10,7 @@ AppBundle\Entity\Task:
                 strategy: AUTO
     fields:
         task:
+
             type: string
             length: 255
         dueDate:
