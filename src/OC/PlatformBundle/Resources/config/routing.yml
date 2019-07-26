@@ -1,8 +1,9 @@
+#oc_platform_homepage :
+#    path    :     /
+#    defaults: { _controller: OCPlatformBundle:Default:index}
+#
+#oc_platform_index                :
 oc_platform_homepage :
-    path    :     /
-    defaults: { _controller: OCPlatformBundle:Default:index}
-
-index                :
     path        :     /{page}
     defaults    : { _controller: OCPlatformBundle:Advert:index, page: 1  }
     requirements:

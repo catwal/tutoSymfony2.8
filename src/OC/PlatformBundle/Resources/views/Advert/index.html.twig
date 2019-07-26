@@ -1,9 +1,32 @@
 {% extends "::base.html.twig" %}
-
-{% block title %}OCPlatformBundle:Advert:index{% endblock %}
+{% block title %} {{ parent() }} - index {% endblock %}
 
 {% block body %}
-    <h1>Welcome to the Advert:index page  {{ webmaster | title }}</h1>
+    <h1>Annonces {{ webmaster | title }}</h1>
+    <hr>
+
+
+    {% block ocplatform_body %}
+
+        <h2>Liste des annonces</h2>
+
+        <ul>
+            {% for advert in listAdverts %}
+                <li>
+                    <a href="{{ path('oc_platform_view', {'id': advert.id}) }}">
+                        {{ advert.title }}
+                    </a>
+                    par {{ advert.author }},
+                    le {{ advert.date|date('d/m/Y') }}
+                </li>
+            {% else %}
+                <li>Pas (encore !) d'annonces</li>
+            {% endfor %}
+        </ul>
+
+    {% endblock %}
 
 
 {% endblock %}
+
+
