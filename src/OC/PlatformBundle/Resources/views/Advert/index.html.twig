@@ -3,14 +3,7 @@
 {% block title %}OCPlatformBundle:Advert:index{% endblock %}
 
 {% block body %}
-    <h1>Welcome to the Advert:index page</h1>
+    <h1>Welcome to the Advert:index page  {{ webmaster | title }}</h1>
 
-    L'id est {{ id }}
-    Le tag est {{ tag }}
-
-  {# On affiche tous les messages flash dont le nom est « info » #}
-      {% for message in app.session.flashbag.get('info') %}
-        <p>Message flash : {{ message }}</p>
-      {% endfor %}
 
 {% endblock %}
