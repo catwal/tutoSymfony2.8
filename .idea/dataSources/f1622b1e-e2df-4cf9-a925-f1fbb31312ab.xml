@@ -1308,181 +1308,319 @@
     <table id="327" parent="4" name="advert">
       <Collation>utf8_unicode_ci</Collation>
     </table>
-    <table id="328" parent="4" name="application">
+    <table id="328" parent="4" name="advert_category">
       <Collation>utf8_unicode_ci</Collation>
     </table>
-    <table id="329" parent="4" name="image">
+    <table id="329" parent="4" name="advert_skilll">
       <Collation>utf8_unicode_ci</Collation>
     </table>
-    <table id="330" parent="4" name="migration_versions">
+    <table id="330" parent="4" name="application">
       <Collation>utf8_unicode_ci</Collation>
     </table>
-    <table id="331" parent="4" name="task">
+    <table id="331" parent="4" name="category">
       <Collation>utf8_unicode_ci</Collation>
     </table>
-    <column id="332" parent="327" name="id">
+    <table id="332" parent="4" name="image">
+      <Collation>utf8_unicode_ci</Collation>
+    </table>
+    <table id="333" parent="4" name="migration_versions">
+      <Collation>utf8_unicode_ci</Collation>
+    </table>
+    <table id="334" parent="4" name="skill">
+      <Collation>utf8_unicode_ci</Collation>
+    </table>
+    <table id="335" parent="4" name="task">
+      <Collation>utf8_unicode_ci</Collation>
+    </table>
+    <column id="336" parent="327" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="333" parent="327" name="date">
+    <column id="337" parent="327" name="date">
       <Position>2</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="334" parent="327" name="title">
+    <column id="338" parent="327" name="title">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="335" parent="327" name="author">
+    <column id="339" parent="327" name="author">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="336" parent="327" name="content">
+    <column id="340" parent="327" name="content">
       <Position>5</Position>
       <DataType>longtext|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="337" parent="327" name="published">
+    <column id="341" parent="327" name="published">
       <Position>6</Position>
       <DataType>tinyint(1)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="338" parent="327" name="image_id">
+    <column id="342" parent="327" name="image_id">
       <Position>7</Position>
       <DataType>int(11)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="339" parent="327" name="UNIQ_54F1F40B3DA5256D">
+    <index id="343" parent="327" name="UNIQ_54F1F40B3DA5256D">
       <ColNames>image_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="340" parent="327" name="PRIMARY">
+    <key id="344" parent="327" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="341" parent="327" name="UNIQ_54F1F40B3DA5256D">
+    <key id="345" parent="327" name="UNIQ_54F1F40B3DA5256D">
       <ColNames>image_id</ColNames>
       <UnderlyingIndexName>UNIQ_54F1F40B3DA5256D</UnderlyingIndexName>
     </key>
-    <foreign-key id="342" parent="327" name="FK_54F1F40B3DA5256D">
+    <foreign-key id="346" parent="327" name="FK_54F1F40B3DA5256D">
       <ColNames>image_id</ColNames>
       <RefSchemaName>tutosymfo</RefSchemaName>
       <RefTableName>image</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="343" parent="328" name="id">
+    <column id="347" parent="328" name="advert_id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="348" parent="328" name="category_id">
+      <Position>2</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="349" parent="328" name="IDX_84EEA340D07ECCB6">
+      <ColNames>advert_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <index id="350" parent="328" name="IDX_84EEA34012469DE2">
+      <ColNames>category_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="351" parent="328" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>advert_id
+category_id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="352" parent="328" name="FK_84EEA340D07ECCB6">
+      <ColNames>advert_id</ColNames>
+      <RefSchemaName>tutosymfo</RefSchemaName>
+      <RefTableName>advert</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="353" parent="328" name="FK_84EEA34012469DE2">
+      <ColNames>category_id</ColNames>
+      <RefSchemaName>tutosymfo</RefSchemaName>
+      <RefTableName>category</RefTableName>
+      <RefColNames>id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="354" parent="329" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="344" parent="328" name="advert_id">
+    <column id="355" parent="329" name="advert_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="345" parent="328" name="author">
+    <column id="356" parent="329" name="skill_id">
       <Position>3</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="357" parent="329" name="level">
+      <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="346" parent="328" name="content">
-      <Position>4</Position>
-      <DataType>longtext|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="347" parent="328" name="date">
-      <Position>5</Position>
-      <DataType>datetime|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <index id="348" parent="328" name="IDX_A45BDDC1D07ECCB6">
+    <index id="358" parent="329" name="IDX_1C3512EBD07ECCB6">
       <ColNames>advert_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="349" parent="328" name="PRIMARY">
+    <index id="359" parent="329" name="IDX_1C3512EB5585C142">
+      <ColNames>skill_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="360" parent="329" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="350" parent="328" name="FK_A45BDDC1D07ECCB6">
+    <foreign-key id="361" parent="329" name="FK_1C3512EBD07ECCB6">
       <ColNames>advert_id</ColNames>
       <RefSchemaName>tutosymfo</RefSchemaName>
       <RefTableName>advert</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="351" parent="329" name="id">
+    <foreign-key id="362" parent="329" name="FK_1C3512EB5585C142">
+      <ColNames>skill_id</ColNames>
+      <RefSchemaName>tutosymfo</RefSchemaName>
+      <RefTableName>skill</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="363" parent="330" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="352" parent="329" name="url">
+    <column id="364" parent="330" name="advert_id">
       <Position>2</Position>
-      <DataType>varchar(255)|0s</DataType>
+      <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="353" parent="329" name="alt">
+    <column id="365" parent="330" name="author">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="354" parent="329" name="PRIMARY">
+    <column id="366" parent="330" name="content">
+      <Position>4</Position>
+      <DataType>longtext|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="367" parent="330" name="date">
+      <Position>5</Position>
+      <DataType>datetime|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <index id="368" parent="330" name="IDX_A45BDDC1D07ECCB6">
+      <ColNames>advert_id</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="369" parent="330" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="355" parent="330" name="version">
-      <Position>1</Position>
-      <DataType>varchar(255)|0s</DataType>
-      <NotNull>1</NotNull>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <key id="356" parent="330" name="PRIMARY">
-      <NameSurrogate>1</NameSurrogate>
-      <ColNames>version</ColNames>
-      <Primary>1</Primary>
-    </key>
-    <column id="357" parent="331" name="id">
+    <foreign-key id="370" parent="330" name="FK_A45BDDC1D07ECCB6">
+      <ColNames>advert_id</ColNames>
+      <RefSchemaName>tutosymfo</RefSchemaName>
+      <RefTableName>advert</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="371" parent="331" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="358" parent="331" name="task">
+    <column id="372" parent="331" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="359" parent="331" name="due_date">
+    <key id="373" parent="331" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="374" parent="332" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="375" parent="332" name="url">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="376" parent="332" name="alt">
+      <Position>3</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="377" parent="332" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="378" parent="333" name="version">
+      <Position>1</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="379" parent="333" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>version</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="380" parent="334" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="381" parent="334" name="name">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="382" parent="334" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="383" parent="335" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="384" parent="335" name="task">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="385" parent="335" name="due_date">
       <Position>3</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="360" parent="331" name="PRIMARY">
+    <key id="386" parent="335" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

@@ -4,6 +4,7 @@
 namespace OC\PlatformBundle\Controller;
 
 use OC\PlatformBundle\Entity\Advert;
+use OC\PlatformBundle\Entity\AdvertSkill;
 use OC\PlatformBundle\Entity\Application;
 use OC\PlatformBundle\Entity\Image;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -78,19 +79,22 @@ class AdvertController extends Controller
         $em     = $this->getDoctrine()->getManager();
         $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
 
-        if ($advert === null) {
+        if (null === $advert) {
             throw new NotFoundHttpException("L'annonce d'id " . $id . " n'existe pas.");
         }
 
         //récupération des listes de candidature
         $listApplications = $em->getRepository('OCPlatformBundle:Application')->findBy(['advert' => $advert]);
 
+        //récupération liste des advertSkills
+        $listAdvertSkills= $em->getRepository('AdvertSkill.php')->findBy(array('advert'=>$advert));
 
         return $this->render(
             'OCPlatformBundle:Advert:view.html.twig',
             [
-                'advert' => $advert,
-                'listApplications'=>$listApplications
+                'advert'           => $advert,
+                'listApplications' => $listApplications,
+                'listAdvertSkills'=> $listAdvertSkills
             ]
         );
     }
@@ -103,6 +107,8 @@ class AdvertController extends Controller
      */
     public function addAction(Request $request)
     {
+        // récupération de l'entityManager
+        $em = $this->getDoctrine()->getManager();
         //verif spam after sumbitting post
         $antispam = $this->container->get('oc_platform.antispam');
         $text     = 'trial with less than 50 caracters jkfsdgmeslkfjgmfghsdmkfghmfkghmfkghfmkgdhfmgkhdfgmkhdsfgmdshg
@@ -125,6 +131,24 @@ class AdvertController extends Controller
         //on lie l'image à l'annonce
         $advert->setImage($image);
 
+        $listSkills = $em->getRepository('OCPlatformBundle:Skill')->findAll();
+
+        // Pour chaque compétence
+        foreach ($listSkills as $skill) {
+            // On crée une nouvelle « relation entre 1 annonce et 1 compétence »
+            $advertSkill = new AdvertSkill();
+
+            // On la lie à l'annonce, qui est ici toujours la même
+            $advertSkill->setAdvert($advert);
+            // On la lie à la compétence, qui change ici dans la boucle foreach
+            $advertSkill->setSkill($skill);
+
+            // Arbitrairement, on dit que chaque compétence est requise au niveau 'Expert'
+            $advertSkill->setLevel('Expert');
+
+            // Et bien sûr, on persiste cette entité de relation, propriétaire des deux autres relations
+            $em->persist($advertSkill);
+        }
 
         // création d'une première candidature
         $application1 = new Application();
@@ -176,6 +200,24 @@ class AdvertController extends Controller
 
     public function editAction($id, Request $request)
     {
+        $em     = $this->getDoctrine()->getManager();
+        $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
+        if (null === $advert) {
+            throw new NotFoundHttpException("L'annonce d'id " . $id . " n'existe pas.");
+        }
+
+        // récupération de toutes les catégories
+        $listCategories = $em->getRepository('OCPlatformBundle:Category')->findAll();
+
+        //boucle sur catégories pour les liées à l'annonce
+        foreach ($listCategories as $category) {
+            $advert->addCategory($category);
+        }
+
+        //déclenche enregistrement
+        $em->flush();
+
+
         // if POST, form have been submitted
         if ($request->isMethod('POST')) {
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée');
@@ -183,14 +225,6 @@ class AdvertController extends Controller
             return $this->redirectToRoute('oc_platform_view', ['id' => 5]);
         }
 
-        // refactoring
-        $advert = [
-            'title'   => 'Recherche développpeur Symfony2',
-            'id'      => $id,
-            'author'  => 'Alexandre',
-            'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
-            'date'    => new \Datetime(),
-        ];
 
         // else display the form for modification
         return $this->render(
@@ -204,6 +238,28 @@ class AdvertController extends Controller
 
     public function deleteAction($id)
     {
+        $em = $this->getDoctrine()->getManager();
+
+        //récupère l'annonce
+        $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
+
+
+        if (null === $advert) {
+            throw new NotFoundHttpException("L'annonce d'id " . $id . " n'existe pas.");
+        }
+
+
+        // On boucle sur les catégories de l'annonce pour les supprimer
+        foreach ($advert->getCategories() as $category) {
+            $advert->removeCategory($category);
+        }
+
+        // Pour persister le changement dans la relation, il faut persister l'entité propriétaire
+        // Ici, Advert est le propriétaire, donc inutile de la persister car on l'a récupérée depuis Doctrine
+
+        // On déclenche la modification
+        $em->flush();
+
         // recovery of id and process of the delete
         return $this->render('OCPlatformBundle:Advert:delete.html.twig');
     }

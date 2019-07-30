@@ -2,7 +2,9 @@
 
 namespace OC\PlatformBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Exception\AccountExpiredException;
 
 /**
  * Advert
@@ -61,6 +63,16 @@ class Advert
      * @ORM\JoinColumn(nullable=true)
      */
     private $image;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="OC\PlatformBundle\Entity\Category", cascade={"persist"})
+     */
+    private $categories;
+
+    /**
+     * @ORM\OneToMany(targetEntity="OC\PlatformBundle\Entity\Application", mappedBy="advert")
+     */
+    private $applications;
 
     /**
      * Get id
@@ -187,9 +199,10 @@ class Advert
     // valeur par défaut à un de nos attributs
     public function __construct()
     {
-        $this->date = new \DateTime();
+        $this->date         = new \DateTime();
+        $this->categories   = new ArrayCollection();
+        $this->applications = new ArrayCollection();
     }
-
 
 
     /**
@@ -214,6 +227,65 @@ class Advert
     public function getPublished()
     {
         return $this->published;
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return $this
+     */
+    public function addCategory(Category $category)
+    {
+        $this->categories[] = $category;
+
+        return $this;
+    }
+
+    /**
+     * @param Category $category
+     */
+    public function removeCategory(Category $category)
+    {
+        $this->categories->removeElement($category);
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+// relation bidirectionnelle il faut setter la variable dans l'entité et pas le faire dans le contrôleur
+    /**
+     * @param Application $application
+     *
+     * @return $this
+     */
+    public function addApplication(Application $application)
+    {
+        $this->applications[] = $application;
+
+        //on lie l'annonce à la candidature advert to application
+        $application->setAdvert($this);
+
+        return $this;
+    }
+
+    /**
+     * @param Application $application
+     */
+    public function removeApplication(Application $application)
+    {
+        $this->applications->removeElement($application);
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getApplications()
+    {
+        return $this->applications;
     }
 
 }
