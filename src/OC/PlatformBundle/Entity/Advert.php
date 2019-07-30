@@ -51,11 +51,16 @@ class Advert
 
     /**
      * @var boolean
-     *             
+     *
      * @ORM\Column(name="published", type="boolean")
      */
     private $published = true;
 
+    /**
+     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist"})
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $image;
 
     /**
      * Get id
@@ -89,6 +94,22 @@ class Advert
     public function getDate()
     {
         return $this->date;
+    }
+
+    /**
+     * @param mixed $image
+     */
+    public function setImage(Image $image = null)
+    {
+        $this->image = $image;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getImage()
+    {
+        return $this->image;
     }
 
     /**
@@ -194,4 +215,5 @@ class Advert
     {
         return $this->published;
     }
+
 }

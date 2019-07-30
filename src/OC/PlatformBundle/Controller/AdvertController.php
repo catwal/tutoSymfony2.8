@@ -3,6 +3,9 @@
 
 namespace OC\PlatformBundle\Controller;
 
+use OC\PlatformBundle\Entity\Advert;
+use OC\PlatformBundle\Entity\Application;
+use OC\PlatformBundle\Entity\Image;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -65,19 +68,29 @@ class AdvertController extends Controller
     public function viewAction($id)
         // see announce
     {
-        $advert = [
-            'title'   => 'Recherche développpeur Symfony2',
-            'id'      => $id,
-            'author'  => 'Alexandre',
-            'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
-            'date'    => new \Datetime(),
-        ];
+//        // récupération du repository
+//        $repository = $this->getDoctrine()->getManager()->getRepository('OCPlatformBundle:Advert');
+//        // recupération de l'objet entité avec cet id
+//        $advert = $repository->find($id);
+//        // si l'id ou advert n'exsite pas
+//
+
+        $em     = $this->getDoctrine()->getManager();
+        $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
+
+        if ($advert === null) {
+            throw new NotFoundHttpException("L'annonce d'id " . $id . " n'existe pas.");
+        }
+
+        //récupération des listes de candidature
+        $listApplications = $em->getRepository('OCPlatformBundle:Application')->findBy(['advert' => $advert]);
+
 
         return $this->render(
             'OCPlatformBundle:Advert:view.html.twig',
             [
-                'id'     => $id,
                 'advert' => $advert,
+                'listApplications'=>$listApplications
             ]
         );
     }
@@ -86,34 +99,72 @@ class AdvertController extends Controller
      * @param Request $request
      *
      * @return RedirectResponse|Response
+     * @throws \Exception
      */
     public function addAction(Request $request)
     {
         //verif spam after sumbitting post
         $antispam = $this->container->get('oc_platform.antispam');
-        $text='trial with less than 50 caracters';
-        if($antispam->isSpam($text)){
+        $text     = 'trial with less than 50 caracters jkfsdgmeslkfjgmfghsdmkfghmfkghmfkghfmkgdhfmgkhdfgmkhdsfgmdshg
+        sdfghsdmfgsdmflkgjdsmlfgjdsmlfgjdsmflkgjsdfmllljg';
+        if ($antispam->isSpam($text)) {
             throw new \Exception('Votre message à été détecté comme spam');
         }
+
+        // création de l'entité
+        $advert = new Advert();
+        $advert->setTitle('Recherche webdesigner');
+        $advert->setAuthor('Monique');
+        $advert->setContent('Nous recherchons sur lyon... ');
+
+        // création entité image
+        $image = new Image();
+        $image->setUrl('http://sdz-upload.s3.amazonaws.com/prod/upload/job-de-reve.jpg');
+        $image->setAlt('Job de rêve');
+
+        //on lie l'image à l'annonce
+        $advert->setImage($image);
+
+
+        // création d'une première candidature
+        $application1 = new Application();
+        $application1->setAuthor('Marine');
+        $application1->setContent('Super motivée');
+
+        //création d'une seconde application
+        $application2 = new Application();
+        $application2->setAuthor('Pierre');
+        $application2->setContent('compétences présentes');
+
+        // lie candidature à l'annonce
+        $application1->setAdvert($advert);
+        $application2->setAdvert($advert);
+
+
+        // récupération de l'entityManager
+        $em = $this->getDoctrine()->getManager();
+
+        // première étape: persiste les données
+        $em->persist($advert);
+
+        //persiste application
+        $em->persist($application1);
+        $em->persist($application2);
+
+        // deuxième étape: on flush ce qui a été persisté
+        $em->flush();
+
 
         // if request with HTTP POST it's because user had submit a form
         if ($request->isMethod('POST')) {
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée');
 
-            return $this->redirectToRoute('oc_platform_view', ['id' => 5]);
+            return $this->redirect($this->generateUrl('oc_platform_view', ['id' => $advert->getId()]));
         }
 
-        $id     = 5;
-        $advert = [
-            'title'   => 'Recherche développpeur Symfony2',
-            'id'      => $id,
-            'author'  => 'Alexandre',
-            'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
-            'date'    => new \Datetime(),
-        ];
 
         return $this->render(
-            'OCPlatformBundle:Advert:view.html.twig',
+            'OCPlatformBundle:Advert:add.html.twig',
             [
                 'advert' => $advert,
             ]
