@@ -280,4 +280,16 @@ class AdvertController extends Controller
             ]
         );
     }
+
+
+    public function testAction()
+    {
+        $repository = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository('OCPlatformBundle:Advert');
+
+        $listAdvert = $repository->myFindAll();
+        //...
+    }
 }
