@@ -4,13 +4,13 @@ namespace OC\PlatformBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Exception\AccountExpiredException;
 
 /**
  * Advert
  *
  * @ORM\Table(name="advert")
  * @ORM\Entity(repositoryClass="OC\PlatformBundle\Repository\AdvertRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Advert
 {
@@ -57,6 +57,18 @@ class Advert
      * @ORM\Column(name="published", type="boolean")
      */
     private $published = true;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="udpate_at", type="datetime", nullable=true)
+     */
+    private $updateAt;
+
+    /**
+     * @ORM\Column(name="nb_applications", type="integer")
+     */
+    private $nbApplication = 0;
 
     /**
      * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist"})
@@ -242,6 +254,15 @@ class Advert
     }
 
     /**
+     * @return \DateTime
+     */
+    public function getUpdateAt(): \DateTime
+    {
+        return $this->updateAt;
+    }
+
+
+    /**
      * @param Category $category
      */
     public function removeCategory(Category $category)
@@ -288,4 +309,31 @@ class Advert
         return $this->applications;
     }
 
+    /**
+     * @param \DateTime $updateAt
+     */
+    public function setUpdateAt(\DateTime $updateAt)
+    {
+        $this->updateAt = $updateAt;
+    }
+
+    /**
+     * @throws \Exception
+     *
+     * @ORM\PreUpdate()
+     */
+    public function updateDate()
+    {
+        $this->setUpdateAt(new \DateTime());
+    }
+
+    public function increaseApplication()
+    {
+        $this->nbApplication++;
+    }
+
+    public function decreaseApplication()
+    {
+        $this->nbApplication--;
+    }
 }

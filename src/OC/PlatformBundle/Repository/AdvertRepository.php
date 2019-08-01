@@ -28,7 +28,6 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
     }
 
 
-
     public function myFindAll()
     {
         /*Toutes les étapes
@@ -40,7 +39,7 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
         //récupération direct (préférable)
         $queryBuilder = $this->createQueryBuilder('a');
 
-        //On récupère el Query à partir du Query
+        //On récupère le Query à partir du Query
         $query = $queryBuilder->getQuery();
 
         //On récupère les résultats
@@ -54,6 +53,16 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
         /*en raccourci*/
 
         return $this->createQueryBuilder('a')->getQuery()->getResult();
+    }
+
+    public function findWithLimit()
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->setMaxResults(3);
+
+        return $qb
+            ->getQuery()
+            ->getResult();
     }
 
     public function testFindAll()

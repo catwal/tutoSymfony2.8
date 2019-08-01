@@ -29,29 +29,32 @@ class AdvertController extends Controller
         }
 
 
-        $listAdverts = [
-            [
-                'title'   => 'Recherche développpeur Symfony2',
-                'id'      => 1,
-                'author'  => 'Alexandre',
-                'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
-                'date'    => new \Datetime(),
-            ],
-            [
-                'title'   => 'Mission de webmaster',
-                'id'      => 2,
-                'author'  => 'Hugo',
-                'content' => 'Nous recherchons un webmaster capable de maintenir notre site internet. Blabla…',
-                'date'    => new \Datetime(),
-            ],
-            [
-                'title'   => 'Offre de stage webdesigner',
-                'id'      => 3,
-                'author'  => 'Mathieu',
-                'content' => 'Nous proposons un poste pour webdesigner. Blabla…',
-                'date'    => new \Datetime(),
-            ],
-        ];
+        $em = $this->getDoctrine()->getManager();
+        $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->myFindAll();
+
+//        $listAdverts = [
+//            [
+//                'title'   => 'Recherche développpeur Symfony2',
+//                'id'      => 1,
+//                'author'  => 'Alexandre',
+//                'content' => 'Nous recherchons un développeur Symfony2 débutant sur Lyon. Blabla…',
+//                'date'    => new \Datetime(),
+//            ],
+//            [
+//                'title'   => 'Mission de webmaster',
+//                'id'      => 2,
+//                'author'  => 'Hugo',
+//                'content' => 'Nous recherchons un webmaster capable de maintenir notre site internet. Blabla…',
+//                'date'    => new \Datetime(),
+//            ],
+//            [
+//                'title'   => 'Offre de stage webdesigner',
+//                'id'      => 3,
+//                'author'  => 'Mathieu',
+//                'content' => 'Nous proposons un poste pour webdesigner. Blabla…',
+//                'date'    => new \Datetime(),
+//            ],
+//        ];
 
         return $this->render(
             'OCPlatformBundle:Advert:index.html.twig',
@@ -87,7 +90,7 @@ class AdvertController extends Controller
         $listApplications = $em->getRepository('OCPlatformBundle:Application')->findBy(['advert' => $advert]);
 
         //récupération liste des advertSkills
-        $listAdvertSkills= $em->getRepository('AdvertSkill.php')->findBy(array('advert'=>$advert));
+        $listAdvertSkills= $em->getRepository('OCPlatformBundle:AdvertSkill')->findBy(array('advert'=>$advert));
 
         return $this->render(
             'OCPlatformBundle:Advert:view.html.twig',
@@ -267,11 +270,9 @@ class AdvertController extends Controller
 
     public function menuAction()
     {
-        $listAdverts = [
-            ['id' => 2, 'title' => 'Recherche développeur Symfony2'],
-            ['id' => 5, 'title' => 'Mission webmaster'],
-            ['id' => 9, 'title' => 'Offre de stage webdesigner'],
-        ];
+        $em = $this->getDoctrine()->getManager();
+        $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->findWithLimit();
+
 
         return $this->render(
             'OCPlatformBundle:Advert:menu.html.twig',

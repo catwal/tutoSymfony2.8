@@ -41,8 +41,7 @@
 
     {% if listApplications is not null %}
         {% for application in listApplications %}
-            <p>{{ application.author }}</p> <br>
-            <p>{{ application.content }}</p>
+            <p>{{ application.author }}: {{ application.content }}</p>
         {% endfor %}
     {% endif %}
 
