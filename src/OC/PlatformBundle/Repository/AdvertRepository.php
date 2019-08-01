@@ -24,7 +24,9 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
         return $qb
             ->getQuery()
             ->getResult();
+        // on va récupérer un tableau d'advert qu'on pourra passer à twig et parcourir avec un for
     }
+
 
 
     public function myFindAll()
