@@ -189,6 +189,19 @@ class AdvertController extends Controller
             return $this->redirect($this->generateUrl('oc_platform_view', ['id' => $advert->getId()]));
         }
 
+        //test slug
+//        $advert = new Advert();
+//        $advert->setTitle("Recherche développeur !");
+//        $advert->setAuthor('Marine');
+//        $advert->setContent("Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…");
+//
+//        $em = $this->getDoctrine()->getManager();
+//        $em->persist($advert);
+//        $em->flush(); // C'est à ce moment qu'est généré le slug
+//
+//        return new Response('Slug généré : '.$advert->getSlug());
+//        // Affiche « Slug généré : recherche-developpeur »
+
 
         return $this->render(
             'OCPlatformBundle:Advert:add.html.twig',
