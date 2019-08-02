@@ -34,7 +34,7 @@ class Advert
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255)
+     * @ORM\Column(name="title", type="string", length=255, unique=true)
      */
     private $title;
 
@@ -72,7 +72,7 @@ class Advert
     private $nbApplication = 0;
 
     /**
-     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="OC\PlatformBundle\Entity\Image", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=true)
      */
     private $image;
@@ -93,6 +93,14 @@ class Advert
      * @ORM\Column(length=128, unique=true)
      */
     private $slug;
+
+    // valeur par défaut à un de nos attributs
+    public function __construct()
+    {
+        $this->date         = new \DateTime();
+        $this->categories   = new ArrayCollection();
+        $this->applications = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -223,15 +231,6 @@ class Advert
     {
         return $this->content;
     }
-
-    // valeur par défaut à un de nos attributs
-    public function __construct()
-    {
-        $this->date         = new \DateTime();
-        $this->categories   = new ArrayCollection();
-        $this->applications = new ArrayCollection();
-    }
-
 
     /**
      * Set published

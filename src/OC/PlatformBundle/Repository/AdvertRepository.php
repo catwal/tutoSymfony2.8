@@ -55,6 +55,15 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
         return $this->createQueryBuilder('a')->getQuery()->getResult();
     }
 
+
+    public function getAdverts()
+    {
+        $query = $this->createQueryBuilder('a')
+            ->orderBy('a.date', 'DESC')
+            ->getQuery();
+        return $query->getResult();
+    }
+
     public function findWithLimit()
     {
         $qb = $this->createQueryBuilder('a');

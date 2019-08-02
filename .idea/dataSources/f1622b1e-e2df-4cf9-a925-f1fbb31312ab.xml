@@ -1394,312 +1394,321 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="347" parent="327" name="UNIQ_54F1F40B3DA5256D">
+    <index id="347" parent="327" name="UNIQ_54F1F40B2B36786B">
+      <ColNames>title</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <index id="348" parent="327" name="UNIQ_54F1F40B3DA5256D">
       <ColNames>image_id</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <index id="348" parent="327" name="UNIQ_54F1F40B989D9B62">
+    <index id="349" parent="327" name="UNIQ_54F1F40B989D9B62">
       <ColNames>slug</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
-    <key id="349" parent="327" name="PRIMARY">
+    <key id="350" parent="327" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="350" parent="327" name="UNIQ_54F1F40B3DA5256D">
+    <key id="351" parent="327" name="UNIQ_54F1F40B2B36786B">
+      <ColNames>title</ColNames>
+      <UnderlyingIndexName>UNIQ_54F1F40B2B36786B</UnderlyingIndexName>
+    </key>
+    <key id="352" parent="327" name="UNIQ_54F1F40B3DA5256D">
       <ColNames>image_id</ColNames>
       <UnderlyingIndexName>UNIQ_54F1F40B3DA5256D</UnderlyingIndexName>
     </key>
-    <key id="351" parent="327" name="UNIQ_54F1F40B989D9B62">
+    <key id="353" parent="327" name="UNIQ_54F1F40B989D9B62">
       <ColNames>slug</ColNames>
       <UnderlyingIndexName>UNIQ_54F1F40B989D9B62</UnderlyingIndexName>
     </key>
-    <foreign-key id="352" parent="327" name="FK_54F1F40B3DA5256D">
+    <foreign-key id="354" parent="327" name="FK_54F1F40B3DA5256D">
       <ColNames>image_id</ColNames>
       <RefSchemaName>tutosymfo</RefSchemaName>
       <RefTableName>image</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="353" parent="328" name="advert_id">
+    <column id="355" parent="328" name="advert_id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="354" parent="328" name="category_id">
+    <column id="356" parent="328" name="category_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="355" parent="328" name="IDX_84EEA340D07ECCB6">
+    <index id="357" parent="328" name="IDX_84EEA340D07ECCB6">
       <ColNames>advert_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="356" parent="328" name="IDX_84EEA34012469DE2">
+    <index id="358" parent="328" name="IDX_84EEA34012469DE2">
       <ColNames>category_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="357" parent="328" name="PRIMARY">
+    <key id="359" parent="328" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>advert_id
 category_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="358" parent="328" name="FK_84EEA340D07ECCB6">
+    <foreign-key id="360" parent="328" name="FK_84EEA340D07ECCB6">
       <ColNames>advert_id</ColNames>
       <RefSchemaName>tutosymfo</RefSchemaName>
       <RefTableName>advert</RefTableName>
       <RefColNames>id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <foreign-key id="359" parent="328" name="FK_84EEA34012469DE2">
+    <foreign-key id="361" parent="328" name="FK_84EEA34012469DE2">
       <ColNames>category_id</ColNames>
       <RefSchemaName>tutosymfo</RefSchemaName>
       <RefTableName>category</RefTableName>
       <RefColNames>id</RefColNames>
       <OnDelete>cascade</OnDelete>
     </foreign-key>
-    <column id="360" parent="329" name="id">
+    <column id="362" parent="329" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="361" parent="329" name="advert_id">
+    <column id="363" parent="329" name="advert_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="362" parent="329" name="skill_id">
+    <column id="364" parent="329" name="skill_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="363" parent="329" name="level">
+    <column id="365" parent="329" name="level">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="364" parent="329" name="IDX_5619F91BD07ECCB6">
+    <index id="366" parent="329" name="IDX_5619F91BD07ECCB6">
       <ColNames>advert_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="365" parent="329" name="IDX_5619F91B5585C142">
+    <index id="367" parent="329" name="IDX_5619F91B5585C142">
       <ColNames>skill_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="366" parent="329" name="PRIMARY">
+    <key id="368" parent="329" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="367" parent="329" name="FK_5619F91BD07ECCB6">
+    <foreign-key id="369" parent="329" name="FK_5619F91BD07ECCB6">
       <ColNames>advert_id</ColNames>
       <RefSchemaName>tutosymfo</RefSchemaName>
       <RefTableName>advert</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="368" parent="329" name="FK_5619F91B5585C142">
+    <foreign-key id="370" parent="329" name="FK_5619F91B5585C142">
       <ColNames>skill_id</ColNames>
       <RefSchemaName>tutosymfo</RefSchemaName>
       <RefTableName>skill</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="369" parent="330" name="id">
+    <column id="371" parent="330" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="370" parent="330" name="advert_id">
+    <column id="372" parent="330" name="advert_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="371" parent="330" name="skill_id">
+    <column id="373" parent="330" name="skill_id">
       <Position>3</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="372" parent="330" name="level">
+    <column id="374" parent="330" name="level">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="373" parent="330" name="IDX_1C3512EBD07ECCB6">
+    <index id="375" parent="330" name="IDX_1C3512EBD07ECCB6">
       <ColNames>advert_id</ColNames>
       <Type>btree</Type>
     </index>
-    <index id="374" parent="330" name="IDX_1C3512EB5585C142">
+    <index id="376" parent="330" name="IDX_1C3512EB5585C142">
       <ColNames>skill_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="375" parent="330" name="PRIMARY">
+    <key id="377" parent="330" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="376" parent="330" name="FK_1C3512EBD07ECCB6">
+    <foreign-key id="378" parent="330" name="FK_1C3512EBD07ECCB6">
       <ColNames>advert_id</ColNames>
       <RefSchemaName>tutosymfo</RefSchemaName>
       <RefTableName>advert</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <foreign-key id="377" parent="330" name="FK_1C3512EB5585C142">
+    <foreign-key id="379" parent="330" name="FK_1C3512EB5585C142">
       <ColNames>skill_id</ColNames>
       <RefSchemaName>tutosymfo</RefSchemaName>
       <RefTableName>skill</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="378" parent="331" name="id">
+    <column id="380" parent="331" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="379" parent="331" name="advert_id">
+    <column id="381" parent="331" name="advert_id">
       <Position>2</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="380" parent="331" name="author">
+    <column id="382" parent="331" name="author">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="381" parent="331" name="content">
+    <column id="383" parent="331" name="content">
       <Position>4</Position>
       <DataType>longtext|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="382" parent="331" name="date">
+    <column id="384" parent="331" name="date">
       <Position>5</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <index id="383" parent="331" name="IDX_A45BDDC1D07ECCB6">
+    <index id="385" parent="331" name="IDX_A45BDDC1D07ECCB6">
       <ColNames>advert_id</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="384" parent="331" name="PRIMARY">
+    <key id="386" parent="331" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <foreign-key id="385" parent="331" name="FK_A45BDDC1D07ECCB6">
+    <foreign-key id="387" parent="331" name="FK_A45BDDC1D07ECCB6">
       <ColNames>advert_id</ColNames>
       <RefSchemaName>tutosymfo</RefSchemaName>
       <RefTableName>advert</RefTableName>
       <RefColNames>id</RefColNames>
     </foreign-key>
-    <column id="386" parent="332" name="id">
+    <column id="388" parent="332" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="387" parent="332" name="name">
+    <column id="389" parent="332" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="388" parent="332" name="PRIMARY">
+    <key id="390" parent="332" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="389" parent="333" name="id">
+    <column id="391" parent="333" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="390" parent="333" name="url">
+    <column id="392" parent="333" name="url">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="391" parent="333" name="alt">
+    <column id="393" parent="333" name="alt">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="392" parent="333" name="PRIMARY">
+    <key id="394" parent="333" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="393" parent="334" name="version">
+    <column id="395" parent="334" name="version">
       <Position>1</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="394" parent="334" name="PRIMARY">
+    <key id="396" parent="334" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>version</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="395" parent="335" name="id">
+    <column id="397" parent="335" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="396" parent="335" name="name">
+    <column id="398" parent="335" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="397" parent="335" name="PRIMARY">
+    <key id="399" parent="335" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="398" parent="336" name="id">
+    <column id="400" parent="336" name="id">
       <Position>1</Position>
       <DataType>int(11)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="399" parent="336" name="task">
+    <column id="401" parent="336" name="task">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="400" parent="336" name="due_date">
+    <column id="402" parent="336" name="due_date">
       <Position>3</Position>
       <DataType>datetime|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="401" parent="336" name="PRIMARY">
+    <key id="403" parent="336" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

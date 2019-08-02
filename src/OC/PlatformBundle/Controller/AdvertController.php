@@ -30,7 +30,9 @@ class AdvertController extends Controller
 
 
         $em = $this->getDoctrine()->getManager();
-        $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->myFindAll();
+        // $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->myFindAll();
+        $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->getAdverts();
+
 
 //        $listAdverts = [
 //            [
@@ -89,15 +91,18 @@ class AdvertController extends Controller
         //récupération des listes de candidature
         $listApplications = $em->getRepository('OCPlatformBundle:Application')->findBy(['advert' => $advert]);
 
-        //récupération liste des advertSkills
-        $listAdvertSkills= $em->getRepository('OCPlatformBundle:AdvertSkill')->findBy(array('advert'=>$advert));
+        dump($advert);
+        //récupération liste des advertSkills Methode magique findByX
+        $listAdvertSkills = $em->getRepository('OCPlatformBundle:AdvertSkill')->findByAdvert($advert);
+
+        dump($listAdvertSkills);
 
         return $this->render(
             'OCPlatformBundle:Advert:view.html.twig',
             [
                 'advert'           => $advert,
                 'listApplications' => $listApplications,
-                'listAdvertSkills'=> $listAdvertSkills
+                'listAdvertSkills' => $listAdvertSkills,
             ]
         );
     }
@@ -110,105 +115,107 @@ class AdvertController extends Controller
      */
     public function addAction(Request $request)
     {
-        // récupération de l'entityManager
-        $em = $this->getDoctrine()->getManager();
-        //verif spam after sumbitting post
-        $antispam = $this->container->get('oc_platform.antispam');
-        $text     = 'trial with less than 50 caracters jkfsdgmeslkfjgmfghsdmkfghmfkghmfkghfmkgdhfmgkhdfgmkhdsfgmdshg
-        sdfghsdmfgsdmflkgjdsmlfgjdsmlfgjdsmflkgjsdfmllljg';
-        if ($antispam->isSpam($text)) {
-            throw new \Exception('Votre message à été détecté comme spam');
-        }
+        /*      // récupération de l'entityManager
+              $em = $this->getDoctrine()->getManager();
+              //verif spam after sumbitting post
+              $antispam = $this->container->get('oc_platform.antispam');
+              $text     = 'trial with less than 50 caracters jkfsdgmeslkfjgmfghsdmkfghmfkghmfkghfmkgdhfmgkhdfgmkhdsfgmdshg
+              sdfghsdmfgsdmflkgjdsmlfgjdsmlfgjdsmflkgjsdfmllljg';
+              if ($antispam->isSpam($text)) {
+                  throw new \Exception('Votre message à été détecté comme spam');
+              }
 
-        // création de l'entité
-        $advert = new Advert();
-        $advert->setTitle('Recherche webdesigner');
-        $advert->setAuthor('Monique');
-        $advert->setContent('Nous recherchons sur lyon... ');
+              // création de l'entité
+              $advert = new Advert();
+              $advert->setTitle('Recherche webdesigner');
+              $advert->setAuthor('Monique');
+              $advert->setContent('Nous recherchons sur lyon... ');
 
-        // création entité image
-        $image = new Image();
-        $image->setUrl('http://sdz-upload.s3.amazonaws.com/prod/upload/job-de-reve.jpg');
-        $image->setAlt('Job de rêve');
+              // création entité image
+              $image = new Image();
+              $image->setUrl('http://sdz-upload.s3.amazonaws.com/prod/upload/job-de-reve.jpg');
+              $image->setAlt('Job de rêve');
 
-        //on lie l'image à l'annonce
-        $advert->setImage($image);
+              //on lie l'image à l'annonce
+              $advert->setImage($image);
 
-        $listSkills = $em->getRepository('OCPlatformBundle:Skill')->findAll();
+              $listSkills = $em->getRepository('OCPlatformBundle:Skill')->findAll();
 
-        // Pour chaque compétence
-        foreach ($listSkills as $skill) {
-            // On crée une nouvelle « relation entre 1 annonce et 1 compétence »
-            $advertSkill = new AdvertSkill();
+              // Pour chaque compétence
+              foreach ($listSkills as $skill) {
+                  // On crée une nouvelle « relation entre 1 annonce et 1 compétence »
+                  $advertSkill = new AdvertSkill();
 
-            // On la lie à l'annonce, qui est ici toujours la même
-            $advertSkill->setAdvert($advert);
-            // On la lie à la compétence, qui change ici dans la boucle foreach
-            $advertSkill->setSkill($skill);
+                  // On la lie à l'annonce, qui est ici toujours la même
+                  $advertSkill->setAdvert($advert);
+                  // On la lie à la compétence, qui change ici dans la boucle foreach
+                  $advertSkill->setSkill($skill);
 
-            // Arbitrairement, on dit que chaque compétence est requise au niveau 'Expert'
-            $advertSkill->setLevel('Expert');
+                  // Arbitrairement, on dit que chaque compétence est requise au niveau 'Expert'
+                  $advertSkill->setLevel('Expert');
 
-            // Et bien sûr, on persiste cette entité de relation, propriétaire des deux autres relations
-            $em->persist($advertSkill);
-        }
+                  // Et bien sûr, on persiste cette entité de relation, propriétaire des deux autres relations
+                  $em->persist($advertSkill);
+              }
 
-        // création d'une première candidature
-        $application1 = new Application();
-        $application1->setAuthor('Marine');
-        $application1->setContent('Super motivée');
+              // création d'une première candidature
+              $application1 = new Application();
+              $application1->setAuthor('Marine');
+              $application1->setContent('Super motivée');
 
-        //création d'une seconde application
-        $application2 = new Application();
-        $application2->setAuthor('Pierre');
-        $application2->setContent('compétences présentes');
+              //création d'une seconde application
+              $application2 = new Application();
+              $application2->setAuthor('Pierre');
+              $application2->setContent('compétences présentes');
 
-        // lie candidature à l'annonce
-        $application1->setAdvert($advert);
-        $application2->setAdvert($advert);
+              // lie candidature à l'annonce
+              $application1->setAdvert($advert);
+              $application2->setAdvert($advert);
 
 
-        // récupération de l'entityManager
-        $em = $this->getDoctrine()->getManager();
+              // récupération de l'entityManager
+              $em = $this->getDoctrine()->getManager();
 
-        // première étape: persiste les données
-        $em->persist($advert);
+              // première étape: persiste les données
+              $em->persist($advert);
 
-        //persiste application
-        $em->persist($application1);
-        $em->persist($application2);
+              //persiste application
+              $em->persist($application1);
+              $em->persist($application2);
 
-        // deuxième étape: on flush ce qui a été persisté
-        $em->flush();
+              // deuxième étape: on flush ce qui a été persisté
+              $em->flush();
+        */
 
 
         // if request with HTTP POST it's because user had submit a form
         if ($request->isMethod('POST')) {
-            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée');
+            $request->getSession()->getFlashBag()->add('info', 'Annonce bien enregistrée');
 
-            return $this->redirect($this->generateUrl('oc_platform_view', ['id' => $advert->getId()]));
+            return $this->redirect($this->generateUrl('oc_platform_view', ['id' => 1]));
         }
 
         //test slug
-//        $advert = new Advert();
-//        $advert->setTitle("Recherche développeur !");
-//        $advert->setAuthor('Marine');
-//        $advert->setContent("Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…");
-//
-//        $em = $this->getDoctrine()->getManager();
-//        $em->persist($advert);
-//        $em->flush(); // C'est à ce moment qu'est généré le slug
-//
-//        return new Response('Slug généré : '.$advert->getSlug());
-//        // Affiche « Slug généré : recherche-developpeur »
+        /*        $advert = new Advert();
+                $advert->setTitle("Recherche développeur !");
+                $advert->setAuthor('Marine');
+                $advert->setContent("Nous recherchons un développeur Symfony débutant sur Lyon. Blabla…");
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($advert);
+                $em->flush(); // C'est à ce moment qu'est généré le slug
+
+                return new Response('Slug généré : '.$advert->getSlug());
+                // Affiche « Slug généré : recherche-developpeur »
 
 
-        return $this->render(
-            'OCPlatformBundle:Advert:add.html.twig',
-            [
-                'advert' => $advert,
-            ]
-        );
+                return $this->render(
+                    'OCPlatformBundle:Advert:add.html.twig',
+                    [
+                        'advert' => $advert,
+                    ]
+                );
+        */
 
         // if not POST display the form
         return $this->render('OCPlatformBundle:Advert:add.html.twig');
@@ -216,29 +223,30 @@ class AdvertController extends Controller
 
     public function editAction($id, Request $request)
     {
-        $em     = $this->getDoctrine()->getManager();
-        $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
-        if (null === $advert) {
-            throw new NotFoundHttpException("L'annonce d'id " . $id . " n'existe pas.");
-        }
+        /*    // récupération de toutes les catégories
+            $listCategories = $em->getRepository('OCPlatformBundle:Category')->findAll();
 
-        // récupération de toutes les catégories
-        $listCategories = $em->getRepository('OCPlatformBundle:Category')->findAll();
-
-        //boucle sur catégories pour les liées à l'annonce
-        foreach ($listCategories as $category) {
-            $advert->addCategory($category);
-        }
+            //boucle sur catégories pour les liées à l'annonce
+            foreach ($listCategories as $category) {
+                $advert->addCategory($category);
+            }
 
         //déclenche enregistrement
         $em->flush();
+            */
+
+        $em     = $this->getDoctrine()->getManager();
+        $advert = $em->getRepository('OCPlatformBundle:Advert')->find($id);
+        if ($advert === null) {
+            throw new createNotFoundException("L'annonce d'id " . $id . " n'existe pas.");
+        }
 
 
         // if POST, form have been submitted
         if ($request->isMethod('POST')) {
             $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée');
 
-            return $this->redirectToRoute('oc_platform_view', ['id' => 5]);
+            return $this->redirectToRoute('oc_platform_view', ['advert' => $advert]);
         }
 
 
@@ -252,7 +260,7 @@ class AdvertController extends Controller
     }
 
 
-    public function deleteAction($id)
+    public function deleteAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -261,7 +269,7 @@ class AdvertController extends Controller
 
 
         if (null === $advert) {
-            throw new NotFoundHttpException("L'annonce d'id " . $id . " n'existe pas.");
+            throw new createNotFoundException("L'annonce d'id " . $id . " n'existe pas.");
         }
 
 
@@ -269,21 +277,27 @@ class AdvertController extends Controller
         foreach ($advert->getCategories() as $category) {
             $advert->removeCategory($category);
         }
-
         // Pour persister le changement dans la relation, il faut persister l'entité propriétaire
         // Ici, Advert est le propriétaire, donc inutile de la persister car on l'a récupérée depuis Doctrine
 
         // On déclenche la modification
         $em->flush();
 
+        if ($request->isMethod('POST')) {
+            $request->getSession()->getFlashBag()->add('info', 'Annonce bien supprimée');
+
+            return $this->redirect($this->generateUrl('oc_platform_homepage'));
+        }
+
+
         // recovery of id and process of the delete
-        return $this->render('OCPlatformBundle:Advert:delete.html.twig');
+        return $this->render('OCPlatformBundle:Advert:delete.html.twig', ['advert' => $advert]);
     }
 
 
     public function menuAction()
     {
-        $em = $this->getDoctrine()->getManager();
+        $em          = $this->getDoctrine()->getManager();
         $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->findWithLimit();
 
 
