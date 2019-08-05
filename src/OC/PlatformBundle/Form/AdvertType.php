@@ -2,11 +2,12 @@
 
 namespace OC\PlatformBundle\Form;
 
-use OC\PlatformBundle\OCPlatformBundle;
 use OC\PlatformBundle\Repository\AdvertRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AdvertType extends AbstractType
@@ -21,7 +22,6 @@ class AdvertType extends AbstractType
             ->add('title', 'text')
             ->add('content', 'textarea')
             ->add('author', 'text')
-            ->add('published', 'checkbox', ['required' => false])
             ->add('image', new ImageType())
             ->add(
                 'categories',
@@ -34,6 +34,19 @@ class AdvertType extends AbstractType
                 ]
             )
 //            ->add(
+//                'advert',
+//                'entity',
+//                [
+//                    'class'         => 'OC\PlatformBundle\Entity\Advert',
+//                    'property'      => 'title',
+//                    'query_builder' => function (AdvertRepository $repo) {
+//                        return $repo->getPublishedQueryBuilder();
+//                    },
+//                ]
+//            )
+
+
+//            ->add(
 //                'categories',
 //                'entity',
 //                [
@@ -44,19 +57,36 @@ class AdvertType extends AbstractType
 
             ->add('save', 'submit');
 
+        // ajout fonction qui écoute evenement
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA, // 1er argument l'evenement
+            function (FormEvent $event){ // evenement à executer lorsque evenement déclenché
+                $advert = $event->getData(); // recupe objet
+                if(null === $advert){
+                    return; // sort de la fonction sans rien faire
+                }
 
-    }
+                // si l'annonce n'est pas encore publiée ou que son id est null
+                if(!$advert->getPublished() || null === $advert->getId()){
+                    // alors ajout champ published
+                    $event->getForm()->add('published', 'checkbox', array(
+                        'required' => false
+                    ));
+                }else{
+                    $event->getForm()->remove('published');
+                }
 
-    /**
+            }
+        );
+
+    }/**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(
-            [
-                'data_class' => 'OC\PlatformBundle\Entity\Advert',
-            ]
-        );
+        $resolver->setDefaults(array(
+            'data_class' => 'OC\PlatformBundle\Entity\Advert'
+        ));
     }
 
     /**

@@ -8,11 +8,13 @@ use OC\PlatformBundle\Entity\AdvertSkill;
 use OC\PlatformBundle\Entity\Application;
 use OC\PlatformBundle\Entity\Image;
 use OC\PlatformBundle\Form\AdvertType;
+use OC\PlatformBundle\Form\AdvertEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 
 class AdvertController extends Controller
 {
@@ -305,21 +307,27 @@ class AdvertController extends Controller
         }
 
 
-        // if POST, form have been submitted
-        if ($request->isMethod('POST')) {
-            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifiée');
 
-            return $this->redirectToRoute('oc_platform_view', ['advert' => $advert]);
+        $form = $this->createForm(new AdvertEditType(), $advert);
+
+        if ($form->handleRequest($request)->isValid()) {
+            // enregistrement dans BBD
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($advert);
+            $em->flush();
+
+            // affichage d'un message
+            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien modifié');
+
+            // redirection page visualisation annonce nouvellement créée.
+            return $this->redirect($this->generateUrl('oc_platform_view', ['id' => $advert->getId()]));
+
         }
 
 
+
         // else display the form for modification
-        return $this->render(
-            'OCPlatformBundle:Advert:edit.html.twig',
-            [
-                'advert' => $advert,
-            ]
-        );
+        return $this->render('OCPlatformBundle:Advert:edit.html.twig', ['form' => $form->createView(), 'advert' => $advert]);
     }
 
 
