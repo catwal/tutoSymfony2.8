@@ -3,6 +3,7 @@
 namespace OC\PlatformBundle\Repository;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * AdvertRepository
@@ -55,8 +56,10 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
         return $this->createQueryBuilder('a')->getQuery()->getResult();
     }
 
-
-    public function getAdverts()
+    /**
+     * @return array
+     */
+    public function getAdverts($page, $nbPerPage)
     {
         $query = $this->createQueryBuilder('a')
             //jointure sur l'attribut image
@@ -69,7 +72,18 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
             ->orderBy('a.date', 'DESC')
             ->getQuery();
 
-        return $query->getResult();
+        //return $query->getResult();
+
+        // ajout d'une pagination
+        $query
+            // définit l'annonce à partir de laquelle commence la liste
+            ->setFirstResult(($page - 1) * $nbPerPage)
+            // ainsi que le nbre d'annonce à afficher sur une page
+            ->setMaxResults($nbPerPage);
+
+        // retour de l'objet paginator correspondant à la requête construite
+        return new Paginator($query, true);
+
     }
 
     public function findWithLimit()

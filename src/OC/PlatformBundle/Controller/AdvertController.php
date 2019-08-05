@@ -28,11 +28,20 @@ class AdvertController extends Controller
             throw new NotFoundHttpException('Page "' . $page . '" inexistante');
         }
 
+        // nbr d'annonce par page
+        $nbPerPage = 3;
 
         $em = $this->getDoctrine()->getManager();
         // $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->myFindAll();
-        $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->getAdverts();
+        $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->getAdverts($page, $nbPerPage);
 
+        //calcul du nbre de page grace au count($listAdverts) qui retourne le nbre ttl d'annonces
+        $nbPages = ceil(count($listAdverts)/$nbPerPage);
+
+        // si la page n'existe pas on retourne un 404
+        if($page > $nbPages){
+            throw $this->createNotFoundException("La page " .$page . " n'existe pas");
+        }
 
 //        $listAdverts = [
 //            [
@@ -57,11 +66,14 @@ class AdvertController extends Controller
 //                'date'    => new \Datetime(),
 //            ],
 //        ];
-        dump($listAdverts);
 
         return $this->render(
             'OCPlatformBundle:Advert:index.html.twig',
-            ['listAdverts' => $listAdverts]
+            [
+                'listAdverts' => $listAdverts,
+                'nbPages'=> $nbPages,
+                'page' => $page
+            ]
         );
     }
 
