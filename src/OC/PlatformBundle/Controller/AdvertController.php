@@ -148,7 +148,8 @@ class AdvertController extends Controller
 //            ->getForm();
 
         // creation du form avec le FormType
-        $form = $this->get('form.factory')->create(new AdvertType(), $advert);
+       // $form = $this->get('form.factory')->create(new AdvertType(), $advert);
+        $form = $this->createForm(new AdvertType(), $advert);
 
 
         // faire lien requete / formulaire
@@ -184,7 +185,7 @@ class AdvertController extends Controller
 
         // if not POST display the form
         //return $this->render('OCPlatformBundle:Advert:add.html.twig');
-        
+
         /*      // récupération de l'entityManager
               $em = $this->getDoctrine()->getManager();
               //verif spam after sumbitting post

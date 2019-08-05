@@ -2,6 +2,9 @@
 
 namespace OC\PlatformBundle\Form;
 
+use OC\PlatformBundle\OCPlatformBundle;
+use OC\PlatformBundle\Repository\AdvertRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -19,7 +22,29 @@ class AdvertType extends AbstractType
             ->add('content', 'textarea')
             ->add('author', 'text')
             ->add('published', 'checkbox', ['required' => false])
+            ->add('image', new ImageType())
+            ->add(
+                'categories',
+                // collection permet de créer une liste de n'importe quoi
+                'collection',
+                [
+                    'type'         => new CategoryType(),
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                ]
+            )
+//            ->add(
+//                'categories',
+//                'entity',
+//                [
+//                    'class' => 'OCPlatformBundle:Category',
+//                    'property' => 'name',
+//                    'multiple' => true,
+//                ])
+
             ->add('save', 'submit');
+
+
     }
 
     /**

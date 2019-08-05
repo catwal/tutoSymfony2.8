@@ -86,6 +86,16 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
+
+    public function getPublishedQueryBuilder()
+    {
+        // attention retourne un QueryBuilder et non un Query
+        return $this->createQueryBuilder('a')
+            ->where('a.published = :published')
+            ->setParameter('published', true);
+    }
+
+
     public function findWithLimit()
     {
         $qb = $this->createQueryBuilder('a');
