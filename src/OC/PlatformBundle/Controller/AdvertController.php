@@ -36,11 +36,11 @@ class AdvertController extends Controller
         $listAdverts = $em->getRepository('OCPlatformBundle:Advert')->getAdverts($page, $nbPerPage);
 
         //calcul du nbre de page grace au count($listAdverts) qui retourne le nbre ttl d'annonces
-        $nbPages = ceil(count($listAdverts)/$nbPerPage);
+        $nbPages = ceil(count($listAdverts) / $nbPerPage);
 
         // si la page n'existe pas on retourne un 404
-        if($page > $nbPages){
-            throw $this->createNotFoundException("La page " .$page . " n'existe pas");
+        if ($page > $nbPages) {
+            throw $this->createNotFoundException("La page " . $page . " n'existe pas");
         }
 
 //        $listAdverts = [
@@ -71,8 +71,8 @@ class AdvertController extends Controller
             'OCPlatformBundle:Advert:index.html.twig',
             [
                 'listAdverts' => $listAdverts,
-                'nbPages'=> $nbPages,
-                'page' => $page
+                'nbPages'     => $nbPages,
+                'page'        => $page,
             ]
         );
     }
@@ -128,6 +128,57 @@ class AdvertController extends Controller
      */
     public function addAction(Request $request)
     {
+        // creation objet advert
+        $advert = new Advert();
+
+        //pré-remplissage
+        //$advert->setAuthor('Michèle');
+
+
+        // creation du formBuilder grace au service form factory
+        $form = $this->get('form.factory')->createBuilder('form', $advert)
+            // ajout champ de l'entité qu'on va avoir dans formulaire - constructeur de formulaire
+            ->add('date', 'date')
+            ->add('title', 'text')
+            ->add('content', 'textarea')
+            ->add('author', 'text')
+            ->add('published', 'checkbox', ['required' => false])
+            ->add('save', 'submit')
+            ->getForm();
+
+        // faire lien requete / formulaire
+        // contient les données du visiteur par le fomrulaire
+        $form->handleRequest($request);
+
+        // verification valeurs correctes
+        if ($form->isValid()) {
+            // enregistrement dans BBD
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($advert);
+            $em->flush();
+
+            // affichage d'un message
+            $request->getSession()->getFlashBag()->add('notice', 'Annonce bien enregistrée');
+
+            // redirection page visualisation annonce nouvellement créée.
+            return $this->redirect($this->generateUrl('oc_platform_view', ['id' => $advert->getId()]));
+
+        }
+
+
+        // passe methode createView du formulaire vers la vue pour creer le formulaire
+        return $this->render('OCPlatformBundle:Advert:add.html.twig', ['form' => $form->createView()]);
+
+
+        // if request with HTTP POST it's because user had submit a form
+        if ($request->isMethod('POST')) {
+            $request->getSession()->getFlashBag()->add('info', 'Annonce bien enregistrée');
+
+            return $this->redirect($this->generateUrl('oc_platform_view', ['id' => 1]));
+        }
+
+        // if not POST display the form
+        return $this->render('OCPlatformBundle:Advert:add.html.twig');
         /*      // récupération de l'entityManager
               $em = $this->getDoctrine()->getManager();
               //verif spam after sumbitting post
@@ -201,13 +252,6 @@ class AdvertController extends Controller
         */
 
 
-        // if request with HTTP POST it's because user had submit a form
-        if ($request->isMethod('POST')) {
-            $request->getSession()->getFlashBag()->add('info', 'Annonce bien enregistrée');
-
-            return $this->redirect($this->generateUrl('oc_platform_view', ['id' => 1]));
-        }
-
         //test slug
         /*        $advert = new Advert();
                 $advert->setTitle("Recherche développeur !");
@@ -230,8 +274,7 @@ class AdvertController extends Controller
                 );
         */
 
-        // if not POST display the form
-        return $this->render('OCPlatformBundle:Advert:add.html.twig');
+
     }
 
     public function editAction($id, Request $request)
