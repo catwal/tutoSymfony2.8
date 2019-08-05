@@ -57,6 +57,7 @@ class AdvertController extends Controller
 //                'date'    => new \Datetime(),
 //            ],
 //        ];
+        dump($listAdverts);
 
         return $this->render(
             'OCPlatformBundle:Advert:index.html.twig',

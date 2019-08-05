@@ -59,8 +59,16 @@ class AdvertRepository extends \Doctrine\ORM\EntityRepository
     public function getAdverts()
     {
         $query = $this->createQueryBuilder('a')
+            //jointure sur l'attribut image
+            ->leftJoin('a.image', 'i')
+            ->addSelect('i')
+            // jointure sur l'attribut category
+            ->leftJoin('a.categories', 'c')
+            ->addSelect('c')
+            //ordre d'affichage
             ->orderBy('a.date', 'DESC')
             ->getQuery();
+
         return $query->getResult();
     }
 
