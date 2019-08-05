@@ -7,6 +7,7 @@ use OC\PlatformBundle\Entity\Advert;
 use OC\PlatformBundle\Entity\AdvertSkill;
 use OC\PlatformBundle\Entity\Application;
 use OC\PlatformBundle\Entity\Image;
+use OC\PlatformBundle\Form\AdvertType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -136,22 +137,26 @@ class AdvertController extends Controller
 
 
         // creation du formBuilder grace au service form factory
-        $form = $this->get('form.factory')->createBuilder('form', $advert)
-            // ajout champ de l'entité qu'on va avoir dans formulaire - constructeur de formulaire
-            ->add('date', 'date')
-            ->add('title', 'text')
-            ->add('content', 'textarea')
-            ->add('author', 'text')
-            ->add('published', 'checkbox', ['required' => false])
-            ->add('save', 'submit')
-            ->getForm();
+//        $form = $this->get('form.factory')->createBuilder('form', $advert)
+//            // ajout champ de l'entité qu'on va avoir dans formulaire - constructeur de formulaire
+//            ->add('date', 'date')
+//            ->add('title', 'text')
+//            ->add('content', 'textarea')
+//            ->add('author', 'text')
+//            ->add('published', 'checkbox', ['required' => false])
+//            ->add('save', 'submit')
+//            ->getForm();
+
+        // creation du form avec le FormType
+        $form = $this->get('form.factory')->create(new AdvertType(), $advert);
+
 
         // faire lien requete / formulaire
-        // contient les données du visiteur par le fomrulaire
-        $form->handleRequest($request);
+        // contient les données du visiteur par le formulaire
+        //$form->handleRequest($request);
 
         // verification valeurs correctes
-        if ($form->isValid()) {
+        if ($form->handleRequest($request)->isValid()) {
             // enregistrement dans BBD
             $em = $this->getDoctrine()->getManager();
             $em->persist($advert);
@@ -171,14 +176,15 @@ class AdvertController extends Controller
 
 
         // if request with HTTP POST it's because user had submit a form
-        if ($request->isMethod('POST')) {
-            $request->getSession()->getFlashBag()->add('info', 'Annonce bien enregistrée');
-
-            return $this->redirect($this->generateUrl('oc_platform_view', ['id' => 1]));
-        }
+//        if ($request->isMethod('POST')) {
+//            $request->getSession()->getFlashBag()->add('info', 'Annonce bien enregistrée');
+//
+//            return $this->redirect($this->generateUrl('oc_platform_view', ['id' => 1]));
+//        }
 
         // if not POST display the form
-        return $this->render('OCPlatformBundle:Advert:add.html.twig');
+        //return $this->render('OCPlatformBundle:Advert:add.html.twig');
+        
         /*      // récupération de l'entityManager
               $em = $this->getDoctrine()->getManager();
               //verif spam after sumbitting post
